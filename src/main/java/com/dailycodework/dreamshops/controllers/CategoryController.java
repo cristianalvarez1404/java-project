@@ -1,10 +1,9 @@
 package com.dailycodework.dreamshops.controllers;
 
-
+import com.dailycodework.dreamshops.response.ApiResponse;
 import com.dailycodework.dreamshops.exceptions.AlreadyExistsException;
 import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
 import com.dailycodework.dreamshops.model.Category;
-import com.dailycodework.dreamshops.response.ApiResponse;
 import com.dailycodework.dreamshops.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,12 +21,12 @@ public class CategoryController {
     private final ICategoryService categoryService;
 
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse> getAllCategories(){
+    public ResponseEntity<ApiResponse> getAllCategories() {
         try {
             List<Category> categories = categoryService.getAllCategories();
-            return ResponseEntity.ok().body(new ApiResponse("Found!",categories));
-        }catch (Exception e){
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error:",INTERNAL_SERVER_ERROR));
+            return  ResponseEntity.ok(new ApiResponse("found",categories));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error:", null));
         }
     }
 

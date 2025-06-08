@@ -76,7 +76,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/by/brand-and-name")
-    public ResponseEntity<ApiResponse> getProductByBrandAndName(@PathVariable String brandName, @PathVariable String productName){
+    public ResponseEntity<ApiResponse> getProductByBrandAndName(@RequestParam String brandName, @RequestParam String productName){
         try{
             List<Product> products = productService.getProductsByBrandAndName(brandName,productName);
             if(products.isEmpty()){
@@ -123,6 +123,29 @@ public class ProductController {
                 return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No product found",null ));
             }
             return ResponseEntity.ok(new ApiResponse("success",products));
+        }catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
+        }
+    }
+
+    @GetMapping("/product/{category}/all/products")
+    public ResponseEntity<ApiResponse> findProductsByCategory(@PathVariable String category){
+        try{
+            List<Product> products = productService.getProductsByCategory(category);
+            if(products.isEmpty()){
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No product found",null ));
+            }
+            return ResponseEntity.ok(new ApiResponse("Product found!",products));
+        }catch (Exception e){
+            return ResponseEntity.ok(new ApiResponse(e.getMessage(),null));
+        }
+    }
+
+    @GetMapping("/products/count/by-brand/and-name")
+    public ResponseEntity<ApiResponse> countProductsByBrandAndName(@RequestParam String brand, @RequestParam String name){
+        try{
+            var productCount = productService.countProductsByBrandAndName(brand,name);
+            return ResponseEntity.ok(new ApiResponse("Product count!",productCount));
         }catch (Exception e){
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
         }
