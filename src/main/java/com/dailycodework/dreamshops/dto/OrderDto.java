@@ -14,5 +14,5 @@ public class OrderDto {
     private LocalDateTime orderDate;
     private BigDecimal totalAmount;
     private String status;
-    private List<OrderItemDto> items;
+    private List<OrderItemsDto> items;
 }
